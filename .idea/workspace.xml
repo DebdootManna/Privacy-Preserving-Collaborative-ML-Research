@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="ee90acb9-2392-40a8-9c46-288808a7f014" name="Changes" comment="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "DebdootManna"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/DebdootManna/Privacy-Preserving-Collaborative-ML-Research.git",
+    "accountId": "ea69c091-b260-4283-b304-fb2e73bcfc1b"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 3
+}]]></component>
+  <component name="ProjectId" id="2xPbqXpndsDqXGt3DAmzSQwewu5" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "master",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-WS-251.25410.117" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="ee90acb9-2392-40a8-9c46-288808a7f014" name="Changes" comment="" />
+      <created>1747842846472</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1747842846472</updated>
+      <workItem from="1747842847591" duration="360000" />
+    </task>
+    <task id="LOCAL-00001" summary="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations">
+      <option name="closed" value="true" />
+      <created>1747842949958</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1747842949958</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations">
+      <option name="closed" value="true" />
+      <created>1747842963007</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1747842963007</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations">
+      <option name="closed" value="true" />
+      <created>1747843021425</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1747843021425</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations">
+      <option name="closed" value="true" />
+      <created>1747843032925</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1747843032925</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations">
+      <option name="closed" value="true" />
+      <created>1747843056545</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1747843056545</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add interactive report on Privacy-Preserving Machine Learning with responsive design and dynamic visualizations" />
+  </component>
+</project>
