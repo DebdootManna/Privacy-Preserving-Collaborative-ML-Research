@@ -1,0 +1,669 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Report: Privacy-Preserving Machine Learning</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - PPML Principles: Interactive cards (HTML/JS). Goal: Inform/Organize.
+        - FL Workflow: HTML/CSS diagram. Goal: Inform/Visualize Process.
+        - DP Noise: Conceptual HTML/JS visual with slider. Goal: Inform/Illustrate.
+        - HE Mechanism: HTML/CSS diagram. Goal: Inform/Illustrate.
+        - SMPC Interaction: HTML/CSS diagram. Goal: Inform/Visualize.
+        - Synergistic Application: HTML/CSS diagram. Goal: Inform/Visualize.
+        - Real-World Applications: Interactive cards (HTML/JS). Goal: Inform/Organize.
+        - Privacy-Utility Trade-off: Conceptual Line Chart (Chart.js). Goal: Compare/Illustrate.
+        - Computational Overheads: Conceptual Bar Chart (Chart.js). Goal: Compare.
+        - Research/Industry Leaders: Styled Lists (HTML/CSS). Goal: Inform/Organize.
+        All choices prioritize clarity and engagement within the designed SPA structure, using HTML/CSS/JS and Chart.js, avoiding SVG/Mermaid.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
+        .nav-link { transition: all 0.3s ease; }
+        .nav-link.active { color: #EA580C; border-bottom-color: #EA580C; }
+        .content-section { min-height: 80vh; }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
+        .tab-button.active { background-color: #FB923C; color: white; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .industry-card { cursor: pointer; transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; }
+        .industry-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .principle-item h3 { cursor: pointer; }
+        .principle-item div { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
+        .principle-item.open div { max-height: 500px; }
+        .diagram-box { border: 1px solid #CBD5E1; padding: 0.75rem; margin: 0.5rem; border-radius: 0.375rem; text-align: center; background-color: #F1F5F9; }
+        .arrow { text-align: center; font-size: 1.5rem; color: #64748B; margin: 0.25rem 0; }
+    </style>
+</head>
+<body class="bg-stone-100 text-neutral-800">
+
+<nav class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+        <a href="#" class="text-xl font-semibold text-orange-600">PPML Explorer</a>
+        <div class="hidden md:flex space-x-4">
+            <a href="#intro" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Introduction</a>
+            <a href="#what-is-ppml" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">What is PPML?</a>
+            <a href="#core-techniques" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Core Techniques</a>
+            <a href="#synergy" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Synergy</a>
+            <a href="#applications" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Applications</a>
+            <a href="#challenges" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Challenges</a>
+            <a href="#future" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Future</a>
+            <a href="#conclusion" class="nav-link px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-orange-600 border-b-2 border-transparent">Conclusion</a>
+        </div>
+        <div class="md:hidden">
+            <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </div>
+    </div>
+    <div id="mobile-menu" class="md:hidden hidden bg-white shadow-lg">
+        <a href="#intro" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Introduction</a>
+        <a href="#what-is-ppml" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">What is PPML?</a>
+        <a href="#core-techniques" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Core Techniques</a>
+        <a href="#synergy" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Synergy</a>
+        <a href="#applications" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Applications</a>
+        <a href="#challenges" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Challenges</a>
+        <a href="#future" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Future</a>
+        <a href="#conclusion" class="block nav-link px-4 py-2 text-sm text-gray-700 hover:bg-orange-100">Conclusion</a>
+    </div>
+</nav>
+
+<main class="container mx-auto px-6 py-8">
+
+    <section id="intro" class="content-section pt-16 text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-orange-700 mb-6">Advancing Collaborative AI with Privacy</h1>
+        <p class="text-lg md:text-xl text-neutral-700 mb-8 max-w-3xl mx-auto">
+            Explore the world of Privacy-Preserving Machine Learning (PPML), a critical field enabling AI advancements while safeguarding sensitive data. This interactive report delves into core techniques, real-world applications, challenges, and the future of secure AI collaboration.
+        </p>
+        <a href="#what-is-ppml" class="bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-8 rounded-lg shadow-md transition duration-300">Discover PPML</a>
+    </section>
+
+    <section id="what-is-ppml" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">What is Privacy-Preserving Machine Learning?</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">This section introduces PPML, its foundational principles, and the urgent need for its adoption. PPML provides a framework to train and deploy machine learning models on sensitive data without compromising individual privacy, enabling innovation while respecting ethical and regulatory boundaries.</p>
+
+        <div class="grid md:grid-cols-2 gap-8 items-start">
+            <div>
+                <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Defining PPML</h3>
+                <p class="text-neutral-600 mb-4">
+                    Privacy-Preserving Machine Learning (PPML) encompasses techniques designed to protect sensitive data throughout the machine learning lifecycle. Its goal is to leverage ML's analytical power while ensuring data privacy and preventing unauthorized leakage. This allows collaborative model training from disparate sources without exposing raw data.
+                </p>
+                <h3 class="text-2xl font-semibold mb-3 text-neutral-700">The Critical Need</h3>
+                <p class="text-neutral-600">
+                    The demand for large, diverse datasets to improve ML models is immense. However, aggregating sensitive data (e.g., health records, financial details) is fraught with privacy risks and regulatory hurdles (GDPR, HIPAA). PPML offers solutions to train models compliantly, foster trust, mitigate security risks, and unlock previously inaccessible data assets, turning privacy from a constraint into a strategic advantage.
+                </p>
+            </div>
+            <div>
+                <h3 class="text-2xl font-semibold mb-6 text-neutral-700">Foundational Principles</h3>
+                <div class="space-y-4" id="ppmlPrinciples">
+                    <div class="principle-item bg-white p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>🛡️ Data Privacy in Training</span> <span class="arrow-icon">▼</span></h3>
+                        <div class="text-neutral-600 mt-2 text-sm">Ensures malicious actors cannot reverse-engineer or reconstruct sensitive training data used to build the model.</div>
+                    </div>
+                    <div class="principle-item bg-white p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>🔒 Privacy in Input</span> <span class="arrow-icon">▼</span></h3>
+                        <div class="text-neutral-600 mt-2 text-sm">Guarantees that other parties, including the model developer, cannot view a user’s raw input data during inference.</div>
+                    </div>
+                    <div class="principle-item bg-white p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>📊 Privacy in Output</span> <span class="arrow-icon">▼</span></h3>
+                        <div class="text-neutral-600 mt-2 text-sm">Ensures model results are exclusively accessible to the client whose data was used for inference.</div>
+                    </div>
+                    <div class="principle-item bg-white p-4 rounded-lg shadow">
+                        <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>🧩 Model Privacy</span> <span class="arrow-icon">▼</span></h3>
+                        <div class="text-neutral-600 mt-2 text-sm">Protects the intellectual property of the ML model itself from theft or unauthorized reverse-engineering.</div>
+                    </div>
+                </div>
+                <p class="text-neutral-600 mt-4 text-sm">
+                    PPML addresses the "data in use" vulnerability, where traditional encryption (for data at rest or in transit) falls short as data is often decrypted for computation. Techniques like Homomorphic Encryption and Federated Learning are designed to protect data during this active processing phase.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="core-techniques" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Core Privacy-Preserving Techniques</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">This section explores the primary methods used in PPML. Each technique offers unique mechanisms to protect data while enabling collaborative machine learning. Understanding these techniques is key to appreciating the diverse toolkit available for building privacy-enhanced AI systems.</p>
+
+        <div class="mb-6 border-b border-gray-200">
+            <nav class="flex space-x-1 justify-center" aria-label="Tabs">
+                <button class="tab-button active py-3 px-6 font-medium text-center text-gray-500 rounded-t-lg hover:text-gray-700 hover:bg-gray-100" data-tab="fl">Federated Learning</button>
+                <button class="tab-button py-3 px-6 font-medium text-center text-gray-500 rounded-t-lg hover:text-gray-700 hover:bg-gray-100" data-tab="dp">Differential Privacy</button>
+                <button class="tab-button py-3 px-6 font-medium text-center text-gray-500 rounded-t-lg hover:text-gray-700 hover:bg-gray-100" data-tab="he">Homomorphic Encryption</button>
+                <button class="tab-button py-3 px-6 font-medium text-center text-gray-500 rounded-t-lg hover:text-gray-700 hover:bg-gray-100" data-tab="smpc">Secure Multi-Party Computation</button>
+            </nav>
+        </div>
+
+        <div id="fl" class="tab-content active p-4 bg-white rounded-lg shadow">
+            <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Federated Learning (FL): Decentralized Training</h3>
+            <p class="text-neutral-600 mb-4">FL enables multiple clients (devices or organizations) to collaboratively train a shared global model without centralizing raw data. Data remains localized, and only model updates (gradients or weights) are shared with a central server for aggregation. This significantly reduces privacy risks and aids compliance.</p>
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h4 class="text-xl font-semibold text-neutral-700 mb-2">FL Workflow:</h4>
+                <div class="flex flex-col items-center space-y-2 md:space-y-0 md:flex-row md:justify-around md:items-start">
+                    <div class="diagram-box w-full md:w-1/5">Server Initializes Global Model</div>
+                    <div class="arrow md:hidden">↓</div> <div class="arrow hidden md:block">→</div>
+                    <div class="diagram-box w-full md:w-1/5">Distributes to Clients</div>
+                    <div class="arrow md:hidden">↓</div> <div class="arrow hidden md:block">→</div>
+                    <div class="diagram-box w-full md:w-1/5">Clients Train Locally (Data Stays Local)</div>
+                    <div class="arrow md:hidden">↓</div> <div class="arrow hidden md:block">→</div>
+                    <div class="diagram-box w-full md:w-1/5">Share Model Updates (Not Raw Data)</div>
+                    <div class="arrow md:hidden">↓</div> <div class="arrow hidden md:block">→</div>
+                    <div class="diagram-box w-full md:w-1/5">Server Aggregates Updates & Refines Global Model (Iterate)</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="dp" class="tab-content p-4 bg-white rounded-lg shadow">
+            <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Differential Privacy (DP): Quantifiable Guarantees</h3>
+            <p class="text-neutral-600 mb-4">DP is a mathematical framework providing provable privacy guarantees. It ensures that the output of an analysis is statistically similar whether or not any individual's data is included. This is achieved by adding calibrated "noise" to the data or computation, masking individual contributions.</p>
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h4 class="text-xl font-semibold text-neutral-700 mb-2">Noise Injection Concept:</h4>
+                <p class="text-sm text-neutral-600 mb-2">The privacy loss parameter, epsilon (ε), quantifies privacy. Lower ε means stronger privacy (more noise) but potentially lower utility.</p>
+                <label for="epsilon-slider" class="block mb-2 text-sm font-medium text-gray-900">Conceptual Epsilon (Privacy Level): <span id="epsilon-value" class="font-bold">Medium</span></label>
+                <input id="epsilon-slider" type="range" min="1" max="10" value="5" class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
+                <p class="text-xs text-neutral-500 mt-1">Slide to see conceptual impact: Low Epsilon (more noise/privacy) vs. High Epsilon (less noise/utility).</p>
+                <div id="dp-visualization" class="mt-4 h-20 bg-blue-100 rounded flex items-center justify-center text-blue-700">
+                    Original Data Points (Conceptual)
+                </div>
+            </div>
+        </div>
+
+        <div id="he" class="tab-content p-4 bg-white rounded-lg shadow">
+            <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Homomorphic Encryption (HE): Computation on Encrypted Data</h3>
+            <p class="text-neutral-600 mb-4">HE allows computations (e.g., addition, multiplication) to be performed directly on encrypted data (ciphertexts) without decryption. The encrypted result, when decrypted, matches the result of operations on plaintext. This protects data "in use."</p>
+            <p class="text-neutral-600 mb-2">Types: Partially (PHE - one operation), Somewhat (SHE - limited operations), Fully (FHE - unlimited operations).</p>
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h4 class="text-xl font-semibold text-neutral-700 mb-2">HE Mechanism:</h4>
+                <div class="flex flex-col items-center space-y-2 md:space-y-0 md:flex-row md:justify-around md:items-center">
+                    <div class="diagram-box">Data</div>
+                    <div class="arrow">→</div>
+                    <div class="diagram-box bg-red-100 text-red-700">Encrypt</div>
+                    <div class="arrow">→</div>
+                    <div class="diagram-box">(Encrypted Data + Operation)</div>
+                    <div class="arrow">→</div>
+                    <div class="diagram-box">Encrypted Result</div>
+                    <div class="arrow">→</div>
+                    <div class="diagram-box bg-green-100 text-green-700">Decrypt</div>
+                    <div class="arrow">→</div>
+                    <div class="diagram-box">Result</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="smpc" class="tab-content p-4 bg-white rounded-lg shadow">
+            <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Secure Multi-Party Computation (SMPC): Collaborative Computation</h3>
+            <p class="text-neutral-600 mb-4">SMPC enables multiple parties to jointly compute a function over their private inputs without revealing those inputs to each other or any third party. It protects data privacy from other participants during computation.</p>
+            <p class="text-neutral-600 mb-2">Key Properties: Input Privacy, Correctness. Types: HE-based, Secret Sharing-based.</p>
+            <div class="bg-slate-50 p-6 rounded-lg">
+                <h4 class="text-xl font-semibold text-neutral-700 mb-2">SMPC Interaction:</h4>
+                <div class="flex flex-col items-center">
+                    <div class="flex space-x-4 mb-2">
+                        <div class="diagram-box">Party A (Private Input A)</div>
+                        <div class="diagram-box">Party B (Private Input B)</div>
+                        <div class="diagram-box">Party C (Private Input C)</div>
+                    </div>
+                    <div class="flex space-x-1"> <div class="arrow">↘</div> <div class="arrow">↓</div> <div class="arrow">↙</div> </div>
+                    <div class="diagram-box bg-purple-100 text-purple-700 w-1/2">Joint Computation (Inputs Remain Secret)</div>
+                    <div class="arrow">↓</div>
+                    <div class="diagram-box w-1/2">Shared Result (e.g., f(A,B,C))</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="synergy" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Synergistic Application of PPML Techniques</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">While individual PPML techniques offer significant privacy benefits, combining them can create even more robust and comprehensive solutions. This section explores how Federated Learning, Differential Privacy, and Secure Multi-Party Computation can be integrated to address various privacy attack vectors and enhance overall data protection in collaborative machine learning.</p>
+        <div class="bg-white p-6 rounded-lg shadow">
+            <h3 class="text-2xl font-semibold mb-3 text-neutral-700">Combining FL, DP, and SMPC for Enhanced Privacy</h3>
+            <p class="text-neutral-600 mb-4">
+                FL ensures data locality, but model updates can still leak information. DP adds noise to these updates to obscure individual contributions. SMPC (often using HE) can protect the aggregation process itself, allowing the server to combine encrypted updates without seeing individual values.
+            </p>
+            <p class="text-neutral-600 mb-4">
+                A novel approach involves distributed noise generation for DP within an SMPC framework. Clients send noisy, encrypted weights, where the noise is collaboratively generated by other parties. This provides stronger guarantees against collusion.
+            </p>
+            <div class="bg-slate-50 p-6 rounded-lg mt-4">
+                <h4 class="text-xl font-semibold text-neutral-700 mb-2">Conceptual Combined Approach:</h4>
+                <div class="flex flex-col items-center">
+                    <div class="diagram-box w-3/4"><strong>Federated Learning Core:</strong> Clients train locally.</div>
+                    <div class="arrow">↓</div>
+                    <div class="diagram-box w-3/4"><strong>Differential Privacy Layer:</strong> Clients add (potentially distributed) noise to their local model updates.</div>
+                    <div class="arrow">↓</div>
+                    <div class="diagram-box w-3/4"><strong>Encryption Layer (for SMPC):</strong> Clients encrypt their noisy updates.</div>
+                    <div class="arrow">↓</div>
+                    <div class="diagram-box w-3/4 bg-teal-100 text-teal-700"><strong>Secure Multi-Party Computation (SMPC) for Aggregation:</strong> Server aggregates encrypted, noisy updates without decrypting individual contributions.</div>
+                    <div class="arrow">↓</div>
+                    <div class="diagram-box w-3/4">Aggregated, Privacy-Preserving Global Model Update</div>
+                </div>
+                <p class="text-sm text-neutral-500 mt-3 text-center">This layered approach aims to protect data at multiple stages, enhancing resilience against various inference attacks.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="applications" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Real-World Applications of PPML</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">PPML is not just theoretical; it's actively transforming industries by enabling data collaboration where privacy is paramount. This section highlights key sectors where PPML techniques are making a significant impact, from improving healthcare outcomes to securing financial transactions and enhancing consumer technologies.</p>
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6" id="applicationsGrid">
+        </div>
+    </section>
+
+    <div id="applicationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+        <div class="relative top-20 mx-auto p-5 border w-11/12 md:w-1/2 shadow-lg rounded-md bg-white">
+            <div class="mt-3 text-center">
+                <h3 class="text-2xl leading-6 font-medium text-orange-700" id="modalTitle"></h3>
+                <div class="mt-2 px-7 py-3">
+                    <p class="text-sm text-gray-500 text-left" id="modalDescription"></p>
+                    <ul class="text-sm text-gray-500 text-left list-disc pl-5 mt-2" id="modalUseCases"></ul>
+                </div>
+                <div class="items-center px-4 py-3">
+                    <button id="closeModalButton" class="px-4 py-2 bg-orange-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-300">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <section id="challenges" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Challenges and Limitations in PPML</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">Despite its promise, PPML faces hurdles that can affect its adoption and effectiveness. This section discusses key challenges, including the balance between privacy and model utility, computational demands, security vulnerabilities, and issues of scalability and data heterogeneity.</p>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">📉 Privacy-Utility Trade-offs</h3>
+                <p class="text-neutral-600 mb-4">Stronger privacy (e.g., more noise in DP) often reduces model accuracy. HE can preserve accuracy but adds overhead. Finding the right balance is application-specific.</p>
+                <div class="chart-container">
+                    <canvas id="privacyUtilityChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">⚙️ Computational & Network Overheads</h3>
+                <p class="text-neutral-600 mb-4">Cryptographic methods like HE and SMPC are computationally intensive. FL involves iterative communication. These can lead to slower performance and higher costs.</p>
+                <div class="chart-container">
+                    <canvas id="overheadChart"></canvas>
+                </div>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">🛡️ Security Vulnerabilities</h3>
+                <p class="text-neutral-600">PPML models can still be vulnerable to data poisoning, evasion attacks, model exploitation, inference attacks (reconstructing data from updates), and model theft. Continuous research is needed for robust defenses.</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">🌐 Scalability and Heterogeneity</h3>
+                <p class="text-neutral-600">Scaling PPML to thousands/millions of devices is hard. Statistical heterogeneity (non-IID client data) and system heterogeneity (varying client capabilities) in FL can degrade performance and fairness. Data quality coordination is also complex.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="future" class="content-section pt-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Recent Advancements and Future Directions</h2>
+        <p class="text-center text-neutral-600 mb-10 max-w-3xl mx-auto">The PPML field is dynamic, with ongoing research driving significant improvements. This section highlights recent breakthroughs in core techniques, emerging trends like hybrid approaches, and the key academic and industry players shaping the future of private AI.</p>
+        <div class="grid md:grid-cols-2 gap-8">
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">Advancements in Core Techniques</h3>
+                <ul class="list-disc list-inside text-neutral-600 space-y-2">
+                    <li><strong>FL:</strong> Adaptive learning, new aggregation algorithms (FedProx, Scaffold), integration with 5G/6G.</li>
+                    <li><strong>DP:</strong> Privacy amplification by subsampling, improved DP-SGD, Lifted DP.</li>
+                    <li><strong>HE:</strong> More practical FHE for deep learning (e.g., Orion framework), hardware acceleration.</li>
+                    <li><strong>SMPC:</strong> Reduced communication complexity, player elimination, segmented consistency checks.</li>
+                </ul>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">Emerging Trends & Hybrid Approaches</h3>
+                <ul class="list-disc list-inside text-neutral-600 space-y-2">
+                    <li>Combining DP with SMPC in FL to balance privacy and accuracy (e.g., DeCaPH).</li>
+                    <li><strong>Federated Analytics:</strong> Gathering insights from decentralized data anonymously.</li>
+                    <li><strong>Private ML Frameworks:</strong> Google's Parfait, Apple's integration of DP.</li>
+                    <li><strong>AI-Enhanced Anonymization:</strong> Using GANs/DNNs for dynamic masking and adaptive noise.</li>
+                    <li>Focus on efficiency, scalability, and practical system integration.</li>
+                </ul>
+            </div>
+            <div class="md:col-span-2 bg-white p-6 rounded-lg shadow">
+                <h3 class="text-xl font-semibold mb-3 text-neutral-700">Leading Research & Industry Collaborations</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="text-lg font-semibold text-orange-600 mb-2">Academic & National Labs:</h4>
+                        <p class="text-sm text-neutral-600">U. South Florida, UC Berkeley, U. Washington, NYU, Harvard, Monash U., Argonne, Brookhaven, Oak Ridge National Labs.</p>
+                    </div>
+                    <div>
+                        <h4 class="text-lg font-semibold text-orange-600 mb-2">Industry Leaders:</h4>
+                        <p class="text-sm text-neutral-600">Google (FL, DP libraries, Parfait), Apple (DP in iOS/macOS), Microsoft (PPML initiative, FLUTE), IBM (AI Privacy Toolkit), J.P. Morgan (Prime Match - SMPC), MPC Alliance, Duality Technologies.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="conclusion" class="content-section pt-16 pb-16">
+        <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Conclusion: The Imperative of PPML</h2>
+        <p class="text-center text-neutral-600 mb-6 max-w-3xl mx-auto">PPML is fundamental to building a trustworthy and ethical AI ecosystem. It bridges AI's potential with the need to protect sensitive data, transforming privacy from a constraint into a strategic enabler for innovation across industries. While challenges in utility, overhead, security, and scalability persist, rapid advancements and strong collaborations are paving the way for more efficient, scalable, and provably private ML systems. Continued investment in research and practical implementation is crucial to harness AI's power responsibly, upholding individual privacy as a core principle.</p>
+    </section>
+
+</main>
+
+<footer class="bg-neutral-800 text-neutral-300 py-8 text-center">
+    <p>&copy; 2025 PPML Interactive Report. Content based on "Advancing Collaborative AI" report.</p>
+</footer>
+
+<script>
+    // Mobile menu toggle
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
+
+    // Smooth scroll and active link highlighting for main navigation
+    const navLinks = document.querySelectorAll('nav a[href^="#"]');
+    const sections = document.querySelectorAll('.content-section');
+
+    function changeNav(targetId) {
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${targetId}`) {
+                link.classList.add('active');
+            }
+        });
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            // For mobile menu, close it after click
+            if (mobileMenu.classList.contains('hidden') === false) {
+                mobileMenu.classList.add('hidden');
+            }
+        });
+    });
+
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            if (pageYOffset >= sectionTop - 100) { // Adjust offset as needed
+                current = section.getAttribute('id');
+            }
+        });
+        if (current) {
+            changeNav(current);
+        }
+    });
+
+
+    // Tab functionality for Core Techniques
+    const tabButtons = document.querySelectorAll('.tab-button');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            button.classList.add('active');
+
+            tabContents.forEach(content => content.classList.remove('active'));
+            document.getElementById(button.dataset.tab).classList.add('active');
+        });
+    });
+
+    // PPML Principles Accordion
+    const principleItems = document.querySelectorAll('.principle-item h3');
+    principleItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const parent = item.parentElement;
+            parent.classList.toggle('open');
+            const icon = item.querySelector('.arrow-icon');
+            icon.textContent = parent.classList.contains('open') ? '▲' : '▼';
+        });
+    });
+
+    // DP Epsilon Slider Visualization
+    const epsilonSlider = document.getElementById('epsilon-slider');
+    const epsilonValueDisplay = document.getElementById('epsilon-value');
+    const dpVisualization = document.getElementById('dp-visualization');
+
+    epsilonSlider.addEventListener('input', (e) => {
+        const value = parseInt(e.target.value);
+        let privacyLevelText = 'Medium';
+        let conceptualText = 'Original Data Points (Conceptual)';
+        let bgColor = 'bg-blue-100';
+
+        if (value <= 3) {
+            privacyLevelText = 'High (More Noise)';
+            conceptualText = 'Data Highly Obscured by Noise (Conceptual)';
+            bgColor = 'bg-red-200';
+        } else if (value >= 8) {
+            privacyLevelText = 'Low (Less Noise)';
+            conceptualText = 'Data Slightly Obscured (Conceptual)';
+            bgColor = 'bg-green-200';
+        } else {
+            conceptualText = 'Data Moderately Obscured (Conceptual)';
+            bgColor = 'bg-yellow-100';
+        }
+        epsilonValueDisplay.textContent = privacyLevelText;
+        dpVisualization.textContent = conceptualText;
+        dpVisualization.className = `mt-4 h-20 rounded flex items-center justify-center text-neutral-700 ${bgColor}`;
+    });
+
+
+    // Applications Data & Modal
+    const applicationsData = [
+        {
+            id: 'healthcare',
+            name: '🩺 Healthcare',
+            description: 'PPML enables collaborative research and improved diagnostics on sensitive patient data while complying with HIPAA/GDPR. It helps in analyzing medical images, genomic data, and predicting clinical outcomes without exposing individual records.',
+            useCases: [
+                'Collaborative diagnostics improvement using FL.',
+                'Genomic data analysis for drug development (FL, HE).',
+                'Secure clinical trial data aggregation (HE).'
+            ]
+        },
+        {
+            id: 'finance',
+            name: '💰 Financial Services',
+            description: 'The financial industry uses PPML for fraud detection, personalized product offerings, and risk management without compromising client data confidentiality or violating regulations like GDPR.',
+            useCases: [
+                'Cross-branch anomaly detection for fraud (FL, SMPC).',
+                'Personalized financial products via models trained on encrypted data (HE).',
+                'Confidential trade matching (e.g., J.P. Morgan\'s Prime Match using SMPC).'
+            ]
+        },
+        {
+            id: 'smartphones',
+            name: '📱 Smartphones',
+            description: 'FL is widely used to improve on-device AI features like predictive text, emoji suggestions, and autocorrect without sending personal conversations or data to central servers.',
+            useCases: [
+                'Google\'s Gboard next-word prediction (FL).',
+                'Apple\'s Genmoji and Image Playground features (FL, DP).',
+                'Understanding aggregate user behavior trends privately (DP).'
+            ]
+        },
+        {
+            id: 'iot',
+            name: '🤖 Internet of Things (IoT)',
+            description: 'PPML helps train models for IoT networks (wearables, smart homes, autonomous cars) that react to real-time data efficiently while maintaining user privacy, addressing connectivity and privacy issues.',
+            useCases: [
+                'Analyzing sensor data from wearables with local DP (e.g., heart rate).',
+                'Smart home device personalization without raw data exposure.',
+                'Efficient model updates in resource-constrained edge devices.'
+            ]
+        },
+        {
+            id: 'advertising',
+            name: '📢 Advertising',
+            description: 'PPML, especially FL, allows the advertising industry to personalize content and product recommendations without directly exposing sensitive user data, helping to alleviate privacy concerns.',
+            useCases: [
+                'Google\'s FLoC for interest-based advertising cohorts (FL).',
+                'Personalized recommendations without sharing browsing history.',
+                'Measuring ad effectiveness with privacy guarantees.'
+            ]
+        },
+        {
+            id: 'autonomous_vehicles',
+            name: '🚗 Autonomous Vehicles',
+            description: 'FL is applied to develop self-driving cars by enabling real-time predictions based on distributed data like road conditions, facilitating continuous learning and faster decision-making for safer driving.',
+            useCases: [
+                'Real-time road and traffic condition updates for model improvement (FL).',
+                'Wheel steering angle prediction.',
+                'Collaborative learning from diverse driving scenarios without sharing raw sensor data.'
+            ]
+        }
+    ];
+
+    const applicationsGrid = document.getElementById('applicationsGrid');
+    const modal = document.getElementById('applicationModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalUseCases = document.getElementById('modalUseCases');
+    const closeModalButton = document.getElementById('closeModalButton');
+
+    applicationsData.forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'industry-card bg-white p-6 rounded-lg shadow hover:shadow-xl';
+        card.innerHTML = `<h3 class="text-xl font-semibold text-orange-600 mb-2">${app.name}</h3><p class="text-sm text-neutral-600">${app.description.substring(0,100)}...</p>`;
+        card.addEventListener('click', () => {
+            modalTitle.textContent = app.name;
+            modalDescription.textContent = app.description;
+            modalUseCases.innerHTML = '';
+            app.useCases.forEach(uc => {
+                const li = document.createElement('li');
+                li.textContent = uc;
+                modalUseCases.appendChild(li);
+            });
+            modal.classList.remove('hidden');
+        });
+        applicationsGrid.appendChild(card);
+    });
+
+    closeModalButton.addEventListener('click', () => modal.classList.add('hidden'));
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) { // Click outside the modal content
+            modal.classList.add('hidden');
+        }
+    });
+
+    // Chart.js label wrapping function
+    function wrapText(ctx, text, maxWidth) {
+        const words = text.split(' ');
+        let lines = [];
+        let currentLine = words[0];
+
+        for (let i = 1; i < words.length; i++) {
+            const word = words[i];
+            const width = ctx.measureText(currentLine + " " + word).width;
+            if (width < maxWidth) {
+                currentLine += " " + word;
+            } else {
+                lines.push(currentLine);
+                currentLine = word;
+            }
+        }
+        lines.push(currentLine);
+        return lines;
+    }
+
+    Chart.defaults.font.family = "'Inter', sans-serif";
+
+    // Privacy-Utility Chart
+    const privacyUtilityCtx = document.getElementById('privacyUtilityChart').getContext('2d');
+    new Chart(privacyUtilityCtx, {
+        type: 'line',
+        data: {
+            labels: ['Very Low', 'Low', 'Medium', 'High', 'Very High'],
+            datasets: [{
+                label: 'Model Utility',
+                data: [95, 85, 70, 50, 30],
+                borderColor: 'rgb(234, 88, 12)',
+                backgroundColor: 'rgba(234, 88, 12, 0.1)',
+                tension: 0.1,
+                fill: true
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { title: { display: true, text: 'Privacy Level (Conceptual)' } },
+                y: { title: { display: true, text: 'Model Utility (Conceptual %)' }, min: 0, max: 100 }
+            },
+            plugins: {
+                title: { display: true, text: 'Conceptual Privacy vs. Utility Trade-off' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            return `Utility: ${context.parsed.y}% at ${context.label} Privacy`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // Computational Overhead Chart
+    const overheadCtx = document.getElementById('overheadChart').getContext('2d');
+    new Chart(overheadCtx, {
+        type: 'bar',
+        data: {
+            labels: ['Federated Learning', 'Differential Privacy', 'Homomorphic Encryption', 'Secure Multi-Party Comp.'],
+            datasets: [
+                {
+                    label: 'Computational Overhead',
+                    data: [2, 1, 5, 4], // Conceptual: 1=Low, 5=Very High
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Network Communication Overhead',
+                    data: [3, 1, 2, 5], // Conceptual
+                    backgroundColor: 'rgba(255, 159, 64, 0.6)',
+                    borderColor: 'rgba(255, 159, 64, 1)',
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            indexAxis: 'y',
+            scales: {
+                x: {
+                    title: { display: true, text: 'Relative Overhead Level (Conceptual)' },
+                    min: 0,
+                    max: 5,
+                    ticks: {
+                        callback: function(value) {
+                            const levels = ['Lowest', 'Low', 'Medium', 'High', 'Very High', 'Highest'];
+                            return levels[value];
+                        }
+                    }
+                },
+                y: {
+                    ticks: {
+                        autoSkip: false,
+                        callback: function(value) {
+                            // 'this' is the scale instance
+                            const label = this.getLabelForValue(value);
+                            if (label.length > 16) { // Max characters before trying to wrap
+                                return label.match(/.{1,16}/g); // Simple split, not word aware for y-axis
+                            }
+                            return label;
+                        }
+                    }
+                }
+            },
+            plugins: {
+                title: { display: true, text: 'Conceptual Overheads of PPML Techniques' },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const levels = ['Lowest', 'Low', 'Medium', 'High', 'Very High', 'Highest'];
+                            return `${context.dataset.label}: ${levels[context.parsed.x]}`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+</script>
+</body>
+</html>
