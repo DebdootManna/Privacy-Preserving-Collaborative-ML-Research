@@ -6,67 +6,119 @@
     <title>Interactive Report: Privacy-Preserving Machine Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Visualization & Content Choices:
-        - PPML Principles: Interactive cards (HTML/JS). Goal: Inform/Organize.
-        - FL Workflow: HTML/CSS diagram. Goal: Inform/Visualize Process.
-        - DP Noise: Conceptual HTML/JS visual with slider. Goal: Inform/Illustrate.
-        - HE Mechanism: HTML/CSS diagram. Goal: Inform/Illustrate.
-        - SMPC Interaction: HTML/CSS diagram. Goal: Inform/Visualize.
-        - Synergistic Application: HTML/CSS diagram. Goal: Inform/Visualize.
-        - Real-World Applications: Interactive cards (HTML/JS). Goal: Inform/Organize.
-        - Privacy-Utility Trade-off: Conceptual Line Chart (Chart.js). Goal: Compare/Illustrate.
-        - Computational Overheads: Conceptual Bar Chart (Chart.js). Goal: Compare.
-        - Research/Industry Leaders: Styled Lists (HTML/CSS). Goal: Inform/Organize.
-        All choices prioritize clarity and engagement within the designed SPA structure, using HTML/CSS/JS and Chart.js, avoiding SVG/Mermaid.
-    -->
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .nav-link { transition: all 0.3s ease; }
         .nav-link.active { color: #EA580C; border-bottom-color: #EA580C; }
-        .content-section { min-height: 80vh; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
-        .content-section.visible { opacity: 1; transform: translateY(0); }
-        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
-        @media (min-width: 768px) { .chart-container { height: 350px; } }
+
+        .content-section {
+            min-height: 80vh;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .content-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container { height: 350px; }
+        }
+
         .tab-button.active { background-color: #FB923C; color: white; }
-        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
-        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
-        .industry-card { cursor: pointer; transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
-        .industry-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .tab-content {
+            display: none;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+        .tab-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .industry-card {
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .industry-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+
         .principle-item h3 { cursor: pointer; }
-        .principle-item div { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
-        .principle-item.open div { max-height: 500px; opacity: 1; }
-        .diagram-box { border: 1px solid #CBD5E1; padding: 0.75rem; margin: 0.5rem; border-radius: 0.375rem; text-align: center; background-color: #F1F5F9; transition: transform 0.3s ease, background-color 0.3s ease; }
-        .diagram-box:hover { transform: scale(1.05); background-color: #E2E8F0; }
-        .arrow { text-align: center; font-size: 1.5rem; color: #64748B; margin: 0.25rem 0; transition: transform 0.3s ease; }
-        .diagram-box:hover + .arrow { transform: scale(1.2); }
-        
+        .principle-item div {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
+            opacity: 0;
+        }
+        .principle-item.open div {
+            max-height: 500px;
+            opacity: 1;
+        }
+
+        .diagram-box {
+            border: 1px solid #CBD5E1;
+            padding: 0.75rem;
+            margin: 0.5rem;
+            border-radius: 0.375rem;
+            text-align: center;
+            background-color: #F1F5F9;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+        }
+        .diagram-box:hover {
+            transform: scale(1.05);
+            background-color: #E2E8F0;
+        }
+
+        .arrow {
+            text-align: center;
+            font-size: 1.5rem;
+            color: #64748B;
+            margin: 0.25rem 0;
+            transition: transform 0.3s ease;
+        }
+        .diagram-box:hover + .arrow {
+            transform: scale(1.2);
+        }
+
         /* New animation classes */
         .fade-in { animation: fadeIn 0.6s ease-out forwards; }
         .slide-up { animation: slideUp 0.6s ease-out forwards; }
         .scale-in { animation: scaleIn 0.4s ease-out forwards; }
-        
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-        
+
         @keyframes slideUp {
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-        
+
         @keyframes scaleIn {
             from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
-        /* Smooth scroll behavior */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
         }
 
-        /* Interactive button styles */
         .interactive-button {
             position: relative;
             overflow: hidden;
@@ -91,7 +143,6 @@
             height: 300px;
         }
 
-        /* Modal animation */
         #applicationModal {
             transition: opacity 0.3s ease;
         }
