@@ -6,6 +6,19 @@
     <title>Interactive Report: Privacy-Preserving Machine Learning</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Visualization & Content Choices:
+        - PPML Principles: Interactive cards (HTML/JS). Goal: Inform/Organize.
+        - FL Workflow: HTML/CSS diagram. Goal: Inform/Visualize Process.
+        - DP Noise: Conceptual HTML/JS visual with slider. Goal: Inform/Illustrate.
+        - HE Mechanism: HTML/CSS diagram. Goal: Inform/Illustrate.
+        - SMPC Interaction: HTML/CSS diagram. Goal: Inform/Visualize.
+        - Synergistic Application: HTML/CSS diagram. Goal: Inform/Visualize.
+        - Real-World Applications: Interactive cards (HTML/JS). Goal: Inform/Organize.
+        - Privacy-Utility Trade-off: Conceptual Line Chart (Chart.js). Goal: Compare/Illustrate.
+        - Computational Overheads: Conceptual Bar Chart (Chart.js). Goal: Compare.
+        - Research/Industry Leaders: Styled Lists (HTML/CSS). Goal: Inform/Organize.
+        All choices prioritize clarity and engagement within the designed SPA structure, using HTML/CSS/JS and Chart.js, avoiding SVG/Mermaid.
+    -->
     <style>
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .nav-link { transition: all 0.3s ease; }
@@ -15,7 +28,7 @@
         .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
         @media (min-width: 768px) { .chart-container { height: 350px; } }
         .tab-button.active { background-color: #FB923C; color: white; }
-        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.3s ease-out, transform 0.3s ease-out; }
         .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
         .industry-card { cursor: pointer; transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
         .industry-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
@@ -26,78 +39,18 @@
         .diagram-box:hover { transform: scale(1.05); background-color: #E2E8F0; }
         .arrow { text-align: center; font-size: 1.5rem; color: #64748B; margin: 0.25rem 0; transition: transform 0.3s ease; }
         .diagram-box:hover + .arrow { transform: scale(1.2); }
-        
-        /* New animation classes */
-        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
-        .slide-up { animation: slideUp 0.6s ease-out forwards; }
-        .scale-in { animation: scaleIn 0.4s ease-out forwards; }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
-        }
-        
-        @keyframes scaleIn {
-            from { transform: scale(0.95); opacity: 0; }
-            to { transform: scale(1); opacity: 1; }
-        }
-
-        /* Smooth scroll behavior */
-        html {
-            scroll-behavior: smooth;
-            scroll-padding-top: 80px;
-        }
-
-        /* Interactive button styles */
-        .interactive-button {
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .interactive-button::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.6s ease, height 0.6s ease;
-        }
-
-        .interactive-button:hover::after {
-            width: 300px;
-            height: 300px;
-        }
-
-        /* Modal animation */
-        #applicationModal {
-            transition: opacity 0.3s ease;
-        }
-
-        #applicationModal .modal-content {
-            transform: scale(0.95);
-            transition: transform 0.3s ease;
-        }
-
-        #applicationModal:not(.hidden) .modal-content {
-            transform: scale(1);
-        }
+        .scroll-to-top { position: fixed; bottom: 20px; right: 20px; background-color: #EA580C; color: white; width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s ease, transform 0.3s ease; transform: translateY(20px); z-index: 1000; }
+        .scroll-to-top.visible { opacity: 1; transform: translateY(0); }
+        .scroll-to-top:hover { transform: translateY(-5px); }
+        .highlight-text { position: relative; display: inline-block; }
+        .highlight-text::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: #EA580C; transition: width 0.3s ease; }
+        .highlight-text:hover::after { width: 100%; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .animate-fadeInUp { animation: fadeInUp 0.6s ease-out forwards; }
+        .modal-content { transform: scale(0.9); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease; }
+        .modal-content.visible { transform: scale(1); opacity: 1; }
     </style>
 </head>
-<body>
-<!-- Rest of your HTML content remains unchanged. This rewrite resolves merge conflicts only. -->
-<!-- If you want the full merged file with HTML sections and script tags included, let me know and I'll continue the full rewrite. -->
-</body>
-</html>
 <body class="bg-stone-100 text-neutral-800">
 
 <nav class="bg-white shadow-md sticky top-0 z-50">
@@ -326,6 +279,11 @@
         </div>
     </div>
 
+    <div class="scroll-to-top" id="scrollToTop">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
+        </svg>
+    </div>
 
     <section id="challenges" class="content-section pt-16">
         <h2 class="text-3xl font-semibold text-center mb-4 text-orange-700">Challenges and Limitations in PPML</h2>
@@ -449,7 +407,6 @@
         }
     });
 
-
     // Tab functionality for Core Techniques
     const tabButtons = document.querySelectorAll('.tab-button');
     const tabContents = document.querySelectorAll('.tab-content');
@@ -480,10 +437,6 @@
             parent.classList.toggle('open');
             const icon = item.querySelector('.arrow-icon');
             icon.textContent = parent.classList.contains('open') ? '▲' : '▼';
-            
-            // Add animation class
-            const content = parent.querySelector('div');
-            content.classList.add('fade-in');
         });
     });
 
@@ -510,12 +463,10 @@
             conceptualText = 'Data Moderately Obscured (Conceptual)';
             bgColor = 'bg-yellow-100';
         }
-        
         epsilonValueDisplay.textContent = privacyLevelText;
         dpVisualization.textContent = conceptualText;
-        dpVisualization.className = `mt-4 h-20 rounded flex items-center justify-center text-neutral-700 ${bgColor} transition-colors duration-300`;
+        dpVisualization.className = `mt-4 h-20 rounded flex items-center justify-center text-neutral-700 ${bgColor}`;
     });
-
 
     // Applications Data & Modal
     const applicationsData = [
@@ -588,57 +539,7 @@
     const modalUseCases = document.getElementById('modalUseCases');
     const closeModalButton = document.getElementById('closeModalButton');
 
-    applicationsData.forEach(app => {
-        const card = document.createElement('div');
-        card.className = 'industry-card bg-white p-6 rounded-lg shadow hover:shadow-xl scale-in';
-        card.innerHTML = `<h3 class="text-xl font-semibold text-orange-600 mb-2">${app.name}</h3><p class="text-sm text-neutral-600">${app.description.substring(0,100)}...</p>`;
-        card.addEventListener('click', () => {
-            modalTitle.textContent = app.name;
-            modalDescription.textContent = app.description;
-            modalUseCases.innerHTML = '';
-            app.useCases.forEach(uc => {
-                const li = document.createElement('li');
-                li.textContent = uc;
-                li.className = 'slide-up';
-                modalUseCases.appendChild(li);
-            });
-            modal.classList.remove('hidden');
-        });
-        applicationsGrid.appendChild(card);
-    });
-
-    // Enhanced modal interactions
-    closeModalButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.add('hidden');
-        }
-    });
-
-    // Add interactive button class to all buttons
-    document.querySelectorAll('button, a[href^="#"]').forEach(button => {
-        button.classList.add('interactive-button');
-    });
-
-    // Add smooth scroll to all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
-    });
-
-    // Intersection Observer for scroll animations
+    // Intersection Observer for fade-in animations
     const observerOptions = {
         root: null,
         rootMargin: '0px',
@@ -649,7 +550,9 @@
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
+                if (entry.target.classList.contains('content-section')) {
+                    observer.unobserve(entry.target);
+                }
             }
         });
     }, observerOptions);
@@ -658,24 +561,68 @@
         observer.observe(section);
     });
 
-    // Existing chart code...
-</script>
+    // Scroll to top button
+    const scrollToTopButton = document.getElementById('scrollToTop');
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 300) {
+            scrollToTopButton.classList.add('visible');
+        } else {
+            scrollToTopButton.classList.remove('visible');
+        }
+    });
 
-</body>
-</html>
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
+    scrollToTopButton.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    });
+
+    // Enhanced modal animations
+    const modalContent = document.querySelector('#applicationModal > div');
+    applicationsData.forEach(app => {
+        const card = document.createElement('div');
+        card.className = 'industry-card bg-white p-6 rounded-lg shadow hover:shadow-xl animate-fadeInUp';
+        card.style.animationDelay = `${applicationsData.indexOf(app) * 0.1}s`;
+        card.innerHTML = `<h3 class="text-xl font-semibold text-orange-600 mb-2">${app.name}</h3><p class="text-sm text-neutral-600">${app.description.substring(0,100)}...</p>`;
+        card.addEventListener('click', () => {
+            modalTitle.textContent = app.name;
+            modalDescription.textContent = app.description;
+            modalUseCases.innerHTML = '';
+            app.useCases.forEach(uc => {
+                const li = document.createElement('li');
+                li.textContent = uc;
+                li.className = 'animate-fadeInUp';
+                li.style.animationDelay = `${app.useCases.indexOf(uc) * 0.1}s`;
                 modalUseCases.appendChild(li);
             });
             modal.classList.remove('hidden');
+            // Force reflow
+            modalContent.offsetHeight;
+            modalContent.classList.add('visible');
         });
         applicationsGrid.appendChild(card);
     });
 
-    closeModalButton.addEventListener('click', () => modal.classList.add('hidden'));
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) { // Click outside the modal content
+    closeModalButton.addEventListener('click', () => {
+        modalContent.classList.remove('visible');
+        setTimeout(() => {
             modal.classList.add('hidden');
+        }, 300);
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modalContent.classList.remove('visible');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
         }
+    });
+
+    // Add highlight effect to important text
+    document.querySelectorAll('h2, h3').forEach(heading => {
+        heading.classList.add('highlight-text');
     });
 
     // Chart.js label wrapping function
@@ -800,46 +747,6 @@
                 }
             }
         }
-    });
-
-    // Intersection Observer for scroll animations
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.content-section').forEach(section => {
-        observer.observe(section);
-    });
-
-    // Add interactive button class to all buttons
-    document.querySelectorAll('button, a[href^="#"]').forEach(button => {
-        button.classList.add('interactive-button');
-    });
-
-    // Add smooth scroll to all anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const targetId = this.getAttribute('href');
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-        });
     });
 
 </script>
