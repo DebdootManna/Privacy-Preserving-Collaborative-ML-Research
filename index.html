@@ -10,115 +10,50 @@
         body { font-family: 'Inter', sans-serif; scroll-behavior: smooth; }
         .nav-link { transition: all 0.3s ease; }
         .nav-link.active { color: #EA580C; border-bottom-color: #EA580C; }
-
-        .content-section {
-            min-height: 80vh;
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .content-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 300px;
-            max-height: 400px;
-        }
-        @media (min-width: 768px) {
-            .chart-container { height: 350px; }
-        }
-
+        .content-section { min-height: 80vh; opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .content-section.visible { opacity: 1; transform: translateY(0); }
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 400px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; } }
         .tab-button.active { background-color: #FB923C; color: white; }
-        .tab-content {
-            display: none;
-            opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        }
-        .tab-content.active {
-            display: block;
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .industry-card {
-            cursor: pointer;
-            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        }
-        .industry-card:hover {
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05);
-        }
-
+        .tab-content { display: none; opacity: 0; transform: translateY(10px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        .tab-content.active { display: block; opacity: 1; transform: translateY(0); }
+        .industry-card { cursor: pointer; transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; }
+        .industry-card:hover { transform: translateY(-5px) scale(1.02); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
         .principle-item h3 { cursor: pointer; }
-        .principle-item div {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out, opacity 0.3s ease-out;
-            opacity: 0;
-        }
-        .principle-item.open div {
-            max-height: 500px;
-            opacity: 1;
-        }
-
-        .diagram-box {
-            border: 1px solid #CBD5E1;
-            padding: 0.75rem;
-            margin: 0.5rem;
-            border-radius: 0.375rem;
-            text-align: center;
-            background-color: #F1F5F9;
-            transition: transform 0.3s ease, background-color 0.3s ease;
-        }
-        .diagram-box:hover {
-            transform: scale(1.05);
-            background-color: #E2E8F0;
-        }
-
-        .arrow {
-            text-align: center;
-            font-size: 1.5rem;
-            color: #64748B;
-            margin: 0.25rem 0;
-            transition: transform 0.3s ease;
-        }
-        .diagram-box:hover + .arrow {
-            transform: scale(1.2);
-        }
-
+        .principle-item div { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out, opacity 0.3s ease-out; opacity: 0; }
+        .principle-item.open div { max-height: 500px; opacity: 1; }
+        .diagram-box { border: 1px solid #CBD5E1; padding: 0.75rem; margin: 0.5rem; border-radius: 0.375rem; text-align: center; background-color: #F1F5F9; transition: transform 0.3s ease, background-color 0.3s ease; }
+        .diagram-box:hover { transform: scale(1.05); background-color: #E2E8F0; }
+        .arrow { text-align: center; font-size: 1.5rem; color: #64748B; margin: 0.25rem 0; transition: transform 0.3s ease; }
+        .diagram-box:hover + .arrow { transform: scale(1.2); }
+        
         /* New animation classes */
         .fade-in { animation: fadeIn 0.6s ease-out forwards; }
         .slide-up { animation: slideUp 0.6s ease-out forwards; }
         .scale-in { animation: scaleIn 0.4s ease-out forwards; }
-
+        
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
+        
         @keyframes slideUp {
             from { transform: translateY(20px); opacity: 0; }
             to { transform: translateY(0); opacity: 1; }
         }
-
+        
         @keyframes scaleIn {
             from { transform: scale(0.95); opacity: 0; }
             to { transform: scale(1); opacity: 1; }
         }
 
+        /* Smooth scroll behavior */
         html {
             scroll-behavior: smooth;
             scroll-padding-top: 80px;
         }
 
+        /* Interactive button styles */
         .interactive-button {
             position: relative;
             overflow: hidden;
@@ -143,6 +78,7 @@
             height: 300px;
         }
 
+        /* Modal animation */
         #applicationModal {
             transition: opacity 0.3s ease;
         }
@@ -159,7 +95,7 @@
 </head>
 <body>
 <!-- Rest of your HTML content remains unchanged. This rewrite resolves merge conflicts only. -->
-<!-- If you want the full merged file with HTML sections and script tags included, let me know and I’ll continue the full rewrite. -->
+<!-- If you want the full merged file with HTML sections and script tags included, let me know and I'll continue the full rewrite. -->
 </body>
 </html>
 <body class="bg-stone-100 text-neutral-800">
@@ -229,11 +165,7 @@
                     </div>
                     <div class="principle-item bg-white p-4 rounded-lg shadow">
                         <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>🔒 Privacy in Input</span> <span class="arrow-icon">▼</span></h3>
-<<<<<<< HEAD
                         <div class="text-neutral-600 mt-2 text-sm">Guarantees that other parties, including the model developer, cannot view a user's raw input data during inference.</div>
-=======
-                        <div class="text-neutral-600 mt-2 text-sm">Guarantees that other parties, including the model developer, cannot view a user’s raw input data during inference.</div>
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
                     </div>
                     <div class="principle-item bg-white p-4 rounded-lg shadow">
                         <h3 class="text-lg font-semibold text-orange-600 flex justify-between items-center"><span>📊 Privacy in Output</span> <span class="arrow-icon">▼</span></h3>
@@ -527,7 +459,6 @@
             tabButtons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
 
-<<<<<<< HEAD
             tabContents.forEach(content => {
                 content.classList.remove('active');
                 content.style.display = 'none';
@@ -538,10 +469,6 @@
             // Force reflow
             targetContent.offsetHeight;
             targetContent.classList.add('active');
-=======
-            tabContents.forEach(content => content.classList.remove('active'));
-            document.getElementById(button.dataset.tab).classList.add('active');
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
         });
     });
 
@@ -553,13 +480,10 @@
             parent.classList.toggle('open');
             const icon = item.querySelector('.arrow-icon');
             icon.textContent = parent.classList.contains('open') ? '▲' : '▼';
-<<<<<<< HEAD
             
             // Add animation class
             const content = parent.querySelector('div');
             content.classList.add('fade-in');
-=======
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
         });
     });
 
@@ -586,16 +510,10 @@
             conceptualText = 'Data Moderately Obscured (Conceptual)';
             bgColor = 'bg-yellow-100';
         }
-<<<<<<< HEAD
         
         epsilonValueDisplay.textContent = privacyLevelText;
         dpVisualization.textContent = conceptualText;
         dpVisualization.className = `mt-4 h-20 rounded flex items-center justify-center text-neutral-700 ${bgColor} transition-colors duration-300`;
-=======
-        epsilonValueDisplay.textContent = privacyLevelText;
-        dpVisualization.textContent = conceptualText;
-        dpVisualization.className = `mt-4 h-20 rounded flex items-center justify-center text-neutral-700 ${bgColor}`;
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
     });
 
 
@@ -672,11 +590,7 @@
 
     applicationsData.forEach(app => {
         const card = document.createElement('div');
-<<<<<<< HEAD
         card.className = 'industry-card bg-white p-6 rounded-lg shadow hover:shadow-xl scale-in';
-=======
-        card.className = 'industry-card bg-white p-6 rounded-lg shadow hover:shadow-xl';
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
         card.innerHTML = `<h3 class="text-xl font-semibold text-orange-600 mb-2">${app.name}</h3><p class="text-sm text-neutral-600">${app.description.substring(0,100)}...</p>`;
         card.addEventListener('click', () => {
             modalTitle.textContent = app.name;
@@ -685,9 +599,70 @@
             app.useCases.forEach(uc => {
                 const li = document.createElement('li');
                 li.textContent = uc;
-<<<<<<< HEAD
                 li.className = 'slide-up';
-=======
+                modalUseCases.appendChild(li);
+            });
+            modal.classList.remove('hidden');
+        });
+        applicationsGrid.appendChild(card);
+    });
+
+    // Enhanced modal interactions
+    closeModalButton.addEventListener('click', () => {
+        modal.classList.add('hidden');
+    });
+
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.add('hidden');
+        }
+    });
+
+    // Add interactive button class to all buttons
+    document.querySelectorAll('button, a[href^="#"]').forEach(button => {
+        button.classList.add('interactive-button');
+    });
+
+    // Add smooth scroll to all anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+
+    // Intersection Observer for scroll animations
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    document.querySelectorAll('.content-section').forEach(section => {
+        observer.observe(section);
+    });
+
+    // Existing chart code...
+</script>
+
+</body>
+</html>
 >>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
                 modalUseCases.appendChild(li);
             });
@@ -696,18 +671,9 @@
         applicationsGrid.appendChild(card);
     });
 
-<<<<<<< HEAD
-    closeModalButton.addEventListener('click', () => {
-        modal.classList.add('hidden');
-    });
-
-    modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-=======
     closeModalButton.addEventListener('click', () => modal.classList.add('hidden'));
     modal.addEventListener('click', (e) => {
         if (e.target === modal) { // Click outside the modal content
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
             modal.classList.add('hidden');
         }
     });
@@ -836,7 +802,6 @@
         }
     });
 
-<<<<<<< HEAD
     // Intersection Observer for scroll animations
     const observerOptions = {
         root: null,
@@ -877,8 +842,6 @@
         });
     });
 
-=======
->>>>>>> 8dd984af6233c5e7cc874cae8a6e51666481102f
 </script>
 </body>
 </html>
